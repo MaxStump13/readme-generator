@@ -1,7 +1,6 @@
 // TODO: Include packages needed for this application
 const inquirer = require("inquirer")
-// const utils = require("./utils")
-const generateMarkdown = require("./utils/generateMarkdown")
+const generate = require("./utils/generateMarkdown.js")
 const fs = require("fs")
 
 // TODO: Create an array of questions for user input
@@ -26,7 +25,7 @@ const questions = [
     },    {
         type: "input",
         message: "Who were the contributors to the application",
-        name: "contributions"
+        name: "contributing"
     },    {
         type: "input",
         message: "What tests are available for this application",
@@ -36,7 +35,7 @@ const questions = [
         type: "list",
         message: "Which license would you like to use?",
         name: "license",
-        choices: ["MIT", "Apache","GNU",""]
+        choices: ["MIT", "Apache","GNU"]
     },
     {
         type: "input",
@@ -52,14 +51,20 @@ const questions = [
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    fs.writeFile(`./generated/${fileName}.md`,data,(err) =>
+    err ? console.log(err) : console.log('Successfully created index.html!'))
+}
 
 // TODO: Create a function to initialize app
 function init() {}
 inquirer
 .prompt(questions)
-.then(function(data){
-    writeToFile(questions[0].name,data)
+.then(function(answers){
+    console.log(answers);
+    const fileN = `${answers.title.toLowerCase().split(" ").join("")}`;
+    const md = generate(answers);    
+    writeToFile(fileN, md);
 })
 // Function call to initialize app
 init();
